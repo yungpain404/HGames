@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HGames - Play Free Online Games</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <a href="/" class="logo" aria-label="HGames home">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M8 4v4l4 4 4-4V4zM16 28l-4-4 4-4 4 4z"/>
+          <circle cx="16" cy="16" r="6" fill="none" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <span>HGames</span>
+      </a>
+      <form class="search" role="search" aria-label="Search games">
+        <input type="search" name="q" placeholder="Search games..." />
+        <button type="submit" aria-label="Search"><svg viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></button>
+      </form>
+      <div class="header-actions">
+        <button class="icon-btn" aria-label="Favorites"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></button>
+        <button class="icon-btn" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13 21a1.994 1.994 0 00-1.41-.59l-3.72.42A1.994 1.994 0 005 18V1c0-1.1.9-2 2-2h14c1.1 0 2 .9 2 2v17c0 1.11-.89 2-2 2z"/></svg><span class="badge" aria-hidden="true">1</span></button>
+        <button class="btn-primary">Sign in</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="categories">
+    <div class="container categories-inner">
+      <a href="#" class="category active" aria-current="page">
+        <img src="assets/images/category-puzzle.svg" alt="" class="category-icon" />
+        <span>Puzzle</span>
+      </a>
+      <a href="#" class="category">
+        <img src="assets/images/category-action.svg" alt="" class="category-icon" />
+        <span>Action</span>
+      </a>
+      <a href="#" class="category">
+        <img src="assets/images/category-sports.svg" alt="" class="category-icon" />
+        <span>Sports</span>
+      </a>
+      <a href="#" class="category">
+        <img src="assets/images/category-racing.svg" alt="" class="category-icon" />
+        <span>Racing</span>
+      </a>
+      <a href="#" class="category">
+        <img src="assets/images/category-adventure.svg" alt="" class="category-icon" />
+        <span>Adventure</span>
+      </a>
+      <a href="#" class="category">
+        <img src="assets/images/category-classic.svg" alt="" class="category-icon" />
+        <span>Classic</span>
+      </a>
+    </div>
+  </nav>
+
+  <section class="banner">
+    <div class="container">
+      <div class="banner-content">
+        <strong class="badge badge-green">No download needed</strong>
+        <h2>Play instantly in your browser</h2>
+        <p>HGames lets you enjoy free online games on any device. No install, no waiting.</p>
+        <a href="#" class="btn-outline">Browse all games</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="featured">
+    <div class="container">
+      <div class="section-header">
+        <h2>Featured games</h2>
+        <a href="#" class="view-all">View all</a>
+      </div>
+      <div class="games-grid" id="games-grid">
+        <!-- Game cards injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <section class="new-games">
+    <div class="container">
+      <div class="section-header">
+        <h2>Newly added</h2>
+        <a href="#" class="view-all">View all</a>
+      </div>
+      <div class="games-grid" id="new-games-grid">
+        <!-- Game cards injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="/" class="logo">HGames</a>
+        <p>Free online games for everyone.</p>
+      </div>
+      <nav class="footer-nav">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="#">All games</a></li>
+          <li><a href="#">Categories</a></li>
+          <li><a href="#">New games</a></li>
+          <li><a href="#">Popular games</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-nav">
+        <h3>Company</h3>
+        <ul>
+          <li><a href="#">About us</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Privacy policy</a></li>
+          <li><a href="#">Terms of service</a></li>
+        </ul>
+      </nav>
+      <div class="footer-copy">
+        <p>&copy; 2026 HGames. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

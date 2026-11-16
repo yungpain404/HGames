@@ -1,0 +1,14 @@
+{
+  "name": "hgames",
+  "version": "1.0.0",
+  "description": "Free online game portal",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node test/main.test.js",
+    "lint": "npx standard js/main.js"
+  },
+  "devDependencies": {
+    "standard": "^17.1.0"
+  }
+}

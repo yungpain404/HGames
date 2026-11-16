@@ -1,0 +1,90 @@
+name: AI Daily Development
+
+on:
+  schedule:
+    - cron: '0 13 * * *'   # 20:00 Asia/Ho_Chi_Minh (UTC+7)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  develop:
+    name: Develop
+    runs-on: ubuntu-latest
+    outputs:
+      patch: ${{ steps.patch.outputs.patch }}
+      report: ${{ steps.report.outputs.report }}
+      has_changes: ${{ steps.has_changes.outputs.has_changes }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dev dependencies
+        run: npm ci
+
+      - name: Run AI developer agent
+        id: develop
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          echo "AI developer agent would run here."
+          echo "This scaffold does not execute external AI; it prepares the workspace."
+          echo "In a full integration, the AI reads AGENTS.md, developer-prompt.md,"
+          echo "implements a task, runs npm test && npm run lint, then emits a patch + report."
+          echo "patch=none" >> "$GITHUB_OUTPUT"
+          echo "report=noop" >> "$GITHUB_OUTPUT"
+          echo "has_changes=false" >> "$GITHUB_OUTPUT"
+
+      - name: Capture outputs
+        id: patch
+        run: |
+          echo "patch=${{ steps.develop.outputs.patch }}" >> "$GITHUB_OUTPUT"
+          echo "report=${{ steps.develop.outputs.report }}" >> "$GITHUB_OUTPUT"
+          echo "has_changes=${{ steps.develop.outputs.has_changes }}" >> "$GITHUB_OUTPUT"
+
+  publish:
+    name: Publish
+    needs: develop
+    if: needs.develop.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Apply patch
+        run: |
+          echo "Applying patch from develop job..."
+          echo "${{ needs.develop.outputs.patch }}" > patch.diff
+          git apply patch.diff || true
+
+      - name: Commit changes
+        run: |
+          git config user.name "HGames AI Developer"
+          git config user.email "ai@hgames.local"
+          git add -A
+          git commit -m "feat(ai): apply autonomous development patch" || echo "nothing to commit"
+
+      - name: Create branch and push
+        run: |
+          BRANCH="ai/dev/${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git push -u origin "$BRANCH"
+
+      - name: Create draft Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          title: "AI: autonomous development patch"
+          body: |
+            ${{ needs.develop.outputs.report }}
+          draft: true
