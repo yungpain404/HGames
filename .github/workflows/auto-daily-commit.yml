@@ -1,0 +1,36 @@
+name: Auto Daily Commit
+
+on:
+  schedule:
+    - cron: '0 20 * * *'
+  workflow_dispatch:
+
+jobs:
+  commit:
+    name: Auto commit & push
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "Auto Commit Bot"
+          git config user.email "auto-commit@github.com"
+
+      - name: Commit changes
+        run: |
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: auto daily commit $(date +%Y-%m-%d)"
+
+      - name: Push changes
+        run: git push origin HEAD:main
