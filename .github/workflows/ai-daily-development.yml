@@ -13,9 +13,9 @@ jobs:
     name: Develop
     runs-on: ubuntu-latest
     outputs:
-      patch: ${{ steps.patch.outputs.patch }}
-      report: ${{ steps.report.outputs.report }}
-      has_changes: ${{ steps.has_changes.outputs.has_changes }}
+      patch: ${{ steps.develop.outputs.patch }}
+      report: ${{ steps.develop.outputs.report }}
+      has_changes: ${{ steps.develop.outputs.has_changes }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -28,25 +28,21 @@ jobs:
       - name: Install dev dependencies
         run: npm ci
 
-      - name: Run AI developer agent
+      - name: Chạy AI developer agent
         id: develop
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          echo "AI developer agent would run here."
-          echo "This scaffold does not execute external AI; it prepares the workspace."
-          echo "In a full integration, the AI reads AGENTS.md, developer-prompt.md,"
-          echo "implements a task, runs npm test && npm run lint, then emits a patch + report."
-          echo "patch=none" >> "$GITHUB_OUTPUT"
-          echo "report=noop" >> "$GITHUB_OUTPUT"
-          echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          node scripts/ai-developer.mjs
 
-      - name: Capture outputs
-        id: patch
-        run: |
-          echo "patch=${{ steps.develop.outputs.patch }}" >> "$GITHUB_OUTPUT"
-          echo "report=${{ steps.develop.outputs.report }}" >> "$GITHUB_OUTPUT"
-          echo "has_changes=${{ steps.develop.outputs.has_changes }}" >> "$GITHUB_OUTPUT"
+      - name: Tải artifacts patch và báo cáo
+        if: steps.develop.outputs.has_changes == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-patch-${{ github.run_id }}
+          path: |
+            patch.diff
+          retention-days: 1
 
   publish:
     name: Publish
@@ -60,10 +56,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Apply patch
+      - name: Tải artifact patch
+        uses: actions/download-artifact@v4
+        with:
+          name: ai-patch-${{ github.run_id }}
+
+      - name: Áp dụng patch
         run: |
-          echo "Applying patch from develop job..."
-          echo "${{ needs.develop.outputs.patch }}" > patch.diff
           git apply patch.diff || true
 
       - name: Commit changes
@@ -83,7 +82,7 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          branch: ai/dev/${{ github.run_id }}
           title: "AI: autonomous development patch"
           body: |
             ${{ needs.develop.outputs.report }}
