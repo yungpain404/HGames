@@ -29,9 +29,6 @@ You are an autonomous Senior Software Engineer maintaining the HGames online web
 - `css/style.css` — styles.
 - `js/main.js` — game data + rendering + search.
 - `assets/images/` — game placeholder icons (SVG).
-- `.github/workflows/ai-daily-development.yml` — daily AI job.
-- `.github/ai/developer-prompt.md` — daily AI control flow.
-- `.github/ai/quality-rules.md` — quality & testing standards.
 - `AGENTS.md` — this file.
 - `TODO.md` — backlog.
 - `README.md` — project overview.

@@ -18,7 +18,6 @@ index.html            # application shell
 css/style.css         # styles
 js/main.js            # game data, rendering, search
 assets/images/        # placeholder icons (SVG)
-.github/              # AI auto-development workflow + prompts
 AGENTS.md             # agent guidelines
 TODO.md               # backlog
 README.md             # this file
@@ -39,11 +38,6 @@ npm test
 # Open the portal
 open index.html   # or serve with any static server
 ```
-
-## AI auto-development
-This repository runs an autonomous AI developer daily (20:00 Asia/Ho_Chi_Minh) via GitHub Actions. It scans the repo, finds a valuable task, implements it, verifies quality, and opens a draft Pull Request for review. See `.github/ai/developer-prompt.md`.
-
-Quality over quantity: a day without a commit is still a success if there is no real improvement to make.
 
 ## License
 MIT
