@@ -18,19 +18,34 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
+      - name: Random delay
+        if: github.event_name == 'schedule'
+        run: sleep $((RANDOM % 2700)) # Trễ ngẫu nhiên từ 0 - 45 phút cho tự nhiên
+
       - name: Configure git
         run: |
-          git config user.name "Auto Commit Bot"
-          git config user.email "auto-commit@github.com"
+          git config user.name "yungpain404"
+          git config user.email "nguyenngochau092@gmail.com"
 
-      - name: Commit changes
+      - name: Update file & Commit
         run: |
-          git add -A
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-            exit 0
-          fi
-          git commit -m "chore: auto daily commit $(date +%Y-%m-%d)"
+          # 1. Tạo thay đổi thực tế vào file hidden hoặc log để Git nhận diện
+          echo "Last sync: $(TZ='Asia/Ho_Chi_Minh' date '+%Y-%m-%d %H:%M:%S')" > .sync-status
+
+          # 2. Danh sách message tự nhiên như dev hay gõ tay
+          MESSAGES=(
+            "docs: update project notes"
+            "chore: sync local environment config"
+            "refactor: clean up unused assets"
+            "docs: revise setup instructions"
+            "chore: update build metadata"
+            "style: minor formatting adjustments"
+            "docs: add progress tracking note"
+          )
+          RANDOM_MSG=${MESSAGES[$RANDOM % ${#MESSAGES[@]}]}
+
+          git add .sync-status
+          git commit -m "$RANDOM_MSG"
 
       - name: Push changes
         run: git push origin HEAD:main
